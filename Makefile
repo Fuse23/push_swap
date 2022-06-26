@@ -15,9 +15,11 @@ HEADERS_DIRECTORY = ./inc/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./src/
-SOURCES_LIST = 	main.c		parse_many_in_one.c		parse_one_at_time.c \
-				parse_utils.c	sort_arr.c		work_with_stack.c \
-				ft_atoi_mod.c
+SOURCES_LIST = 	main.c					parse_many_in_one.c			parse_one_at_time.c 	\
+				parse_utils.c			sort_arr.c					work_with_stack.c 		\
+				ft_atoi_mod.c			instruction_push.c			instruction_rotate.c 	\
+				instruction_reverse.c	sort_five.c					sort_big.c 				\
+				sort_optima.c			sort_some.c					instruction_swap.c
 
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))

@@ -6,7 +6,7 @@
 /*   By: falarm <falarm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 20:38:48 by falarm            #+#    #+#             */
-/*   Updated: 2022/06/25 22:26:04 by falarm           ###   ########.fr       */
+/*   Updated: 2022/06/26 22:09:38 by falarm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	show(t_data *data)
 
 	tmp = data->stack_a;
 	i = 0;
-	while (i < data->size_a)
+	while (tmp->next != data->stack_a)
 	{
 		ft_putnbr_fd(tmp->value, 1);
 		ft_putchar_fd('\t', 1);
@@ -66,6 +66,30 @@ static t_data	*preparse(int argc, char **argv)
 	return (data);
 }
 
+static void	sorting(t_data *data)
+{
+	if (is_stack_sorted(data))
+		free_stack(data);
+	if (data->size_a < 6)
+	{
+		sort_five(data);
+		free_stack(data);
+	}
+	move_a_to_b_first(data);
+	while (!(is_stack_sorted(data) && data->size_b == 0))
+	{
+		if (data->size_b > 0 && data->size_b < 6)
+			sort_b_to_a_five(data);
+		else if (data->size_b >= 6)
+			move_b_to_a(data);
+		if (data->size_b == 0)
+		{
+			sort_a_to_b_five(data, 0, 0, 0);
+			move_a_to_b(data);
+		}
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	*data;
@@ -73,6 +97,8 @@ int	main(int argc, char **argv)
 	if (argc > 1)
 	{
 		data = preparse(argc, argv);
+		// show(data);
+		sorting(data);
 		show(data);
 		free_stack(data);
 	}
