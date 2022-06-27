@@ -1,56 +1,68 @@
-NAME_PS = push_swap
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: falarm <falarm@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/06/27 16:20:27 by falarm            #+#    #+#              #
+#    Updated: 2022/06/27 18:25:47 by falarm           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-CC = gcc
-FLAGS = -Wall -Werror -Wextra
-LIBRARIES = -lft -L$(LIBFT_DIRECTORY)
-INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS)
+NAME	=	push_swap
+NAME_B	=	checker
 
-LIBFT = $(LIBFT_DIRECTORY)libft.a
-LIBFT_DIRECTORY = ./libft_src/
-LIBFT_HEADERS = $(LIBFT_DIRECTORY)
+SRCS	=	src/main.c					src/parse_many_in_one.c			src/parse_one_at_time.c 	\
+			src/parse_utils.c			src/sort_arr.c					src/work_with_stack.c 		\
+			src/ft_atoi_mod.c			src/instruction_push.c			src/instruction_rotate.c 	\
+			src/instruction_reverse.c	src/sort_five.c					src/sort_move.c 			\
+			src/sort_five_second.c		src/sort_some.c					src/instruction_swap.c
+
+SRCS_B	=	src/instruction_swap.c		src/parse_many_in_one.c			src/parse_one_at_time.c 	\
+			src/parse_utils.c			src/sort_arr.c					src/work_with_stack.c 		\
+			src/ft_atoi_mod.c			src/instruction_push.c			src/instruction_rotate.c 	\
+			src/instruction_reverse.c	src/checker.c					src/checker_utils.c
+
+OBJ		=	$(SRCS:%.c=%.o)
+
+OBJ_B	=	$(SRCS_B:%.c=%.o)
+
+LIB		=	libft_src/libft.a
+
+INCLUDE	=	inc/
+
+HEADER	=	push_swap.h
+
+CC		=	gcc
+
+FLAGS	=	-Wall -Wextra -Werror
+
+RM		= rm -rf
 
 
-HEADERS_LIST = push_swap.h
-HEADERS_DIRECTORY = ./inc/
-HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
+.PHONY:		all	clean	fclean	re	bonus	libft
 
-SOURCES_DIRECTORY = ./src/
-SOURCES_LIST = 	main.c					parse_many_in_one.c			parse_one_at_time.c 	\
-				parse_utils.c			sort_arr.c					work_with_stack.c 		\
-				ft_atoi_mod.c			instruction_push.c			instruction_rotate.c 	\
-				instruction_reverse.c	sort_five.c					sort_big.c 				\
-				sort_optima.c			sort_some.c					instruction_swap.c
+all:		libft $(NAME)
 
+libft:
+			@$(MAKE) -C libft_src/
 
-SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
-OBJECTS_DIRECTORY = ./objects/
-OBJECTS_LIST = $(patsubst %.c, %.o, $(SOURCES_LIST))
-OBJECTS	= $(addprefix $(OBJECTS_DIRECTORY), $(OBJECTS_LIST))
+$(NAME):	$(OBJ)
+			$(CC) $(FLAGS) $(OBJ) $(LIB) -o $(NAME)
 
-.PHONY: all clean fclean re
+%.o:		%.c $(INCLUDE)$(HEADER)
+			$(CC) $(FLAGS)  -c $< -o $@ -I $(INCLUDE)
 
-all: $(NAME_PS)
-
-$(NAME_PS): $(LIBFT) $(OBJECTS_DIRECTORY) $(OBJECTS)
-	$(CC) $(FLAGS) $(LIBRARIES) $(INCLUDES) $(OBJECTS) -o $(NAME_PS)
-
-$(OBJECTS_DIRECTORY):
-	mkdir -p $(OBJECTS_DIRECTORY)
-
-$(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADERS)
-	$(CC) $(FLAGS) -c $(INCLUDES) $< -o $@
-
-$(LIBFT):
-	$(MAKE) -sC $(LIBFT_DIRECTORY)
+bonus:		libft $(OBJ_B)
+			$(CC) $(FLAGS) $(OBJ_B) $(LIB) -o $(NAME_B)
 
 clean:
-	$(MAKE) -sC $(LIBFT_DIRECTORY) clean
-	rm -rf $(OBJECTS_DIRECTORY)
+			@$(RM) $(OBJ) $(OBJ_B)
+			@$(MAKE) -C libft_src/ clean
 
-fclean: clean
-	rm -f $(LIBFT)
-	rm -f $(NAME_PS)
+fclean:		clean
+			@$(MAKE) -C libft_src/ fclean
+			@$(RM) $(NAME) $(NAME_B)
 
-re:
-	$(MAKE) fclean
-	$(MAKE) all
+re:			fclean all

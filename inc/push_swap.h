@@ -6,7 +6,7 @@
 /*   By: falarm <falarm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 20:07:23 by falarm            #+#    #+#             */
-/*   Updated: 2022/06/26 22:06:23 by falarm           ###   ########.fr       */
+/*   Updated: 2022/06/27 18:25:25 by falarm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,31 +84,23 @@ void		sb(t_data *data, int flag);
 void		ss(t_data *data, int flag);
 
 //sort_five.c
-void		sort_three_a(t_data *data);
-void		sort_three_b(t_data *data);
 void		sort_five(t_data *data);
 
 //sort_some.c
-void		move_down(t_data *data);
-void		move_a_to_b_first(t_data *data);
-void		min_max_med_a(t_data *data);
-void		min_max_med_b(t_data *data);
+void		process_a_first(t_data *data);
+void		value_in_a(t_data *data);
+void		value_in_b(t_data *data);
 
-//sort_big.c
-int			search_min_b_to_a(t_data *data);
-void		move_b_to_a(t_data *data);
-void		move_a_to_b(t_data *data);
+//sort_move.c
+void		move_to_a(t_data *data);
+void		move_to_b(t_data *data);
 void		push_down(t_data *data);
-void		search_min_a_to_b(t_data *data);
 
-//sort_optima.c
-void		sort_three_a_to_b(t_data *data);
-void		privet_norma(t_data *data, int flag);
-void		sort_a_to_b_five(t_data *data, int flag, int min, int i);
-void		privet_norma_2(t_data *data, int flag);
-void		sort_b_to_a_five(t_data *data);
+//sort_five_second.c
+void		sort_five_a(t_data *data, int flag, int min, int i);
+void		sort_five_b(t_data *data);
 
-
-void	show(t_data *data);
+//checker_utils.c
+char		*get_next_line(int fd);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: falarm <falarm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 21:30:56 by falarm            #+#    #+#             */
-/*   Updated: 2022/06/26 22:01:26 by falarm           ###   ########.fr       */
+/*   Updated: 2022/06/27 14:03:48 by falarm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
-void	sort_three_a(t_data *data)
+static void	sort_three_a(t_data *data)
 {
 	int	a;
 	int	b;
@@ -31,34 +31,7 @@ void	sort_three_a(t_data *data)
 		sa(data, 1);
 }
 
-void	sort_three_b(t_data *data)
-{
-	int	a;
-	int	b;
-	int	c;
-	int	i;
-
-	a = data->stack_b->order;
-	b = data->stack_b->next->order;
-	c = data->stack_b->prev->order;
-	i = data->size_b;
-	if (b > a && b > c)
-		rrb(data, 1);
-	else if (a > b && a > c)
-		rb(data, 1);
-	a = data->stack_b->order;
-	b = data->stack_b->next->order;
-	if (a > b)
-		sb(data, 1);
-	while (i-- > 0)
-	{
-		data->stack_b->flag = -1;
-		pa(data, 1);
-		ra(data, 1);
-	}
-}
-
-int	short_cut(t_data *data)
+int	short_way(t_data *data)
 {
 	int		i;
 	int		j;
@@ -89,13 +62,13 @@ void	sort_five(t_data *data)
 {
 	while (data->size_a > 3)
 	{
-		min_max_med_a(data);
+		value_in_a(data);
 		if (data->stack_a->order == data->min)
 		{
 			pb(data, 1);
 			continue ;
 		}
-		if (short_cut(data))
+		if (short_way(data))
 			ra(data, 1);
 		else
 			rra(data, 1);

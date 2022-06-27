@@ -1,16 +1,68 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: falarm <falarm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/25 20:38:48 by falarm            #+#    #+#             */
-/*   Updated: 2022/06/27 15:32:17 by falarm           ###   ########.fr       */
+/*   Created: 2022/06/27 14:38:27 by falarm            #+#    #+#             */
+/*   Updated: 2022/06/27 17:56:52 by falarm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
+
+static int	instructions(char *line, t_data *data)
+{
+	if (!ft_strncmp(line, "pa\n", 3))
+		pa(data, 0);
+	else if (!ft_strncmp(line, "pb\n", 3))
+		pb(data, 0);
+	else if (!ft_strncmp(line, "sa\n", 3))
+		sa(data, 0);
+	else if (!ft_strncmp(line, "sb\n", 3))
+		sb(data, 0);
+	else if (!ft_strncmp(line, "ss\n", 3))
+		ss(data, 0);
+	else if (!ft_strncmp(line, "ra\n", 3))
+		ra(data, 0);
+	else if (!ft_strncmp(line, "rb\n", 3))
+		rb(data, 0);
+	else if (!ft_strncmp(line, "rr\n", 3))
+		rr(data, 0);
+	else if (!ft_strncmp(line, "rra\n", 4))
+		rra(data, 0);
+	else if (!ft_strncmp(line, "rrb\n", 4))
+		rrb(data, 0);
+	else if (!ft_strncmp(line, "rrr\n", 4))
+		rrr(data, 0);
+	else
+		return (1);
+	return (0);
+}
+
+static void	check(t_data *data)
+{
+	char	*line;
+
+	while (1)
+	{
+		line = get_next_line(0);
+		if (!line)
+			break ;
+		if (instructions(line, data))
+		{
+			free(line);
+			ft_putendl_fd("Error", 2);
+			return ;
+		}
+		free(line);
+	}
+	if (data->stack_b == NULL && is_stack_sorted(data))
+		ft_putendl_fd("OK", 1);
+	else
+		ft_putendl_fd("KO", 1);
+}
 
 static int	*parse(int argc, char **argv, t_data *data)
 {
@@ -49,30 +101,6 @@ static t_data	*preparse(int argc, char **argv)
 	return (data);
 }
 
-static void	start_sort(t_data *data)
-{
-	if (is_stack_sorted(data))
-		free_stack(data);
-	if (data->size_a < 6)
-	{
-		sort_five(data);
-		free_stack(data);
-	}
-	process_a_first(data);
-	while (!(is_stack_sorted(data) && data->size_b == 0))
-	{
-		if (data->size_b > 0 && data->size_b < 6)
-			sort_five_b(data);
-		else if (data->size_b >= 6)
-			move_to_a(data);
-		if (data->size_b == 0)
-		{
-			sort_five_a(data, 0, 0, 0);
-			move_to_b(data);
-		}
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_data	*data;
@@ -80,8 +108,7 @@ int	main(int argc, char **argv)
 	if (argc > 1)
 	{
 		data = preparse(argc, argv);
-		start_sort(data);
+		check(data);
 		free_stack(data);
 	}
-	return (0);
 }

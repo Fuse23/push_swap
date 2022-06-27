@@ -6,13 +6,13 @@
 /*   By: falarm <falarm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 21:38:08 by falarm            #+#    #+#             */
-/*   Updated: 2022/06/26 21:44:12 by falarm           ###   ########.fr       */
+/*   Updated: 2022/06/27 13:55:51 by falarm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
-void	move_down(t_data *data)
+static void	push_down_from_b(t_data *data)
 {
 	while (data->stack_b->prev->flag == -1)
 		rrb(data, 1);
@@ -23,11 +23,11 @@ void	move_down(t_data *data)
 	}
 }
 
-void	move_a_to_b_first(t_data *data)
+void	process_a_first(t_data *data)
 {
 	int	i;
 
-	min_max_med_a(data);
+	value_in_a(data);
 	i = data->size_a;
 	while (i-- > 0)
 	{
@@ -48,10 +48,10 @@ void	move_a_to_b_first(t_data *data)
 				ra(data, 1);
 		}
 	}
-	move_down(data);
+	push_down_from_b(data);
 }
 
-void	min_max_med_a(t_data *data)
+void	value_in_a(t_data *data)
 {
 	int	i;
 	int	min;
@@ -75,7 +75,7 @@ void	min_max_med_a(t_data *data)
 	data->mid = (min + max) / 2;
 }
 
-void	min_max_med_b(t_data *data)
+void	value_in_b(t_data *data)
 {
 	int	i;
 	int	min;
